@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/The-GGG/slack-client#readme",
   "dependencies": {
+    "request": "^2.81.0",
     "request-promise": "^4.2.0"
   }
 }

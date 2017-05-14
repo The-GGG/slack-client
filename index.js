@@ -20,7 +20,8 @@ module.exports = class SlackClient {
           channel: channelId,
           text: message,
           attachments: JSON.stringify(attachments)
-        }
+        },
+        json: true
       })
       .then(res => {
         console.log(`send message response: ${res}`);
@@ -48,7 +49,8 @@ module.exports = class SlackClient {
           ts: ts,
           text: message,
           attachments: JSON.stringify(attachments)
-        }
+        },
+        json: true
       })
       .then(res => {
         console.log(`update message response: ${res}`);

@@ -1,27 +1,30 @@
 const rp = require('request-promise');
 
 module.exports = class SlackClient {
-  constructor(webhookUrl) {
-    this.webhookUrl = webhookUrl;
+  constructor(token) {
+    this.token = token;
   }
 
-  sendMessage(message, attachments) {
+  sendMessage(channelId, message, attachments) {
+    console.log(attachments);
     if (attachments && attachments.constructor !== Array) {
       throw new Error("attachments must be an array");
     }
     return rp({
-        method: 'PUT',
+        method: 'POST',
         headers: {
-          'content-type': 'application/json',
+          'content-type': 'application/x-www-form-urlencoded',
         },
-        uri: this.webhookUrl,
-        body: JSON.stringify({
+        uri: 'https://slack.com/api/chat.postMessage',
+        form: {
+          token: this.token,
+          channel: channelId,
           text: message,
-          attachments: attachments}),
-    })
+          attachments: JSON.stringify(attachments)
+        }
+      })
       .then(res => console.log(message))
       .catch(function(error) {
-        console.error('error!!!!');
         console.error(error);
       });
   }

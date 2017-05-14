@@ -6,7 +6,6 @@ module.exports = class SlackClient {
   }
 
   sendMessage(channelId, message, attachments) {
-    console.log(attachments);
     if (attachments && attachments.constructor !== Array) {
       throw new Error("attachments must be an array");
     }
@@ -23,9 +22,41 @@ module.exports = class SlackClient {
           attachments: JSON.stringify(attachments)
         }
       })
-      .then(res => console.log(message))
+      .then(res => {
+        console.log(`send message response: ${res}`);
+        return res;
+      })
       .catch(function(error) {
-        console.error(error);
+        console.error(`error sending message: ${error}`);
+        throw error;
+      });
+  }
+
+  updateMessage(channelId, ts, message, attachments) {
+    if (attachments && attachments.constructor !== Array) {
+      throw new Error("attachments must be an array");
+    }
+    return rp({
+        method: 'POST',
+        headers: {
+          'content-type': 'application/x-www-form-urlencoded',
+        },
+        uri: 'https://slack.com/api/chat.update',
+        form: {
+          token: this.token,
+          channel: channelId,
+          ts: ts,
+          text: message,
+          attachments: JSON.stringify(attachments)
+        }
+      })
+      .then(res => {
+        console.log(`update message response: ${res}`);
+        return res;
+      })
+      .catch(function(error) {
+        console.error(`error updating message: ${error}`);
+        throw error;
       });
   }
 }

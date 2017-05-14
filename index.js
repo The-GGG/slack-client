@@ -53,11 +53,11 @@ module.exports = class SlackClient {
         json: true
       })
       .then(res => {
-        console.log(`update message response: ${res}`);
+        console.log(`update message response: ${JSON.stringify(res)}`);
         return res;
       })
       .catch(function(error) {
-        console.error(`error updating message: ${error}`);
+        console.error(`error updating message: ${JSON.stringify(error)}`);
         throw error;
       });
   }
